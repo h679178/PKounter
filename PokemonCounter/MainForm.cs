@@ -207,6 +207,7 @@ namespace PokemonCounter
                 Lib.HuntsList.RemoveAt(TBL_CONTENT.Controls.Count - 1);
                 TBL_CONTENT.Controls.RemoveAt(TBL_CONTENT.Controls.Count - 1);
                 this.Width = TBL_CONTENT.Width;
+                this.Height = PNL_MENU.Height + TBL_CONTENT.Height;
             }
         }
         
