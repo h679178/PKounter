@@ -41,7 +41,7 @@ namespace PokemonCounter
         private void UpdateGens()
         {
             CB_GEN.Items.Clear();
-            int[] PkmnMax = { 151, 251, 386, 493, 649, 807 };
+            int[] PkmnMax = { 151, 251, 386, 493, 649, 721, 807, 905, 1025 };
             for (int i = 0; i < PkmnMax.Length; i++)
             {
                 if (!CKB_ORDER.Checked & (CB_POKE.SelectedIndex + 1) <= PkmnMax[i]) { CB_GEN.Items.Add("GEN " + (i + 1)); }
@@ -162,7 +162,9 @@ namespace PokemonCounter
                         "TapuKoko",
                         "TapuLele",
                         "TapuBulu",
-                        "TapuFini"
+                        "TapuFini",
+                        "Sirfetchd",
+                        "MrRime"
                     };
                     int[] NormalPositionExceptions =
                     {
@@ -178,7 +180,9 @@ namespace PokemonCounter
                         784,
                         785,
                         786,
-                        787
+                        787,
+                        864,
+                        865
                     };
                     string[] ShinyNameExceptions =
                     {
@@ -194,7 +198,9 @@ namespace PokemonCounter
                         "TapuKoko",
                         "TapuLele",
                         "TapuBulu",
-                        "TapuFini"
+                        "TapuFini",
+                        "Sirfetchd",
+                        "MrRime"
                     };
                     int[] ShinyPositionExceptions =
                     {
@@ -210,7 +216,9 @@ namespace PokemonCounter
                         784,
                         785,
                         786,
-                        787
+                        787,
+                        864,
+                        865
                     };
 
                     string[] normalNames = Lib.PkmnNameException(Lib.PkmnNamesList, NormalPositionExceptions, NormalNameExceptions);

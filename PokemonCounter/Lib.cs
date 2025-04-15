@@ -39,7 +39,10 @@ namespace PokemonCounter
                 new string[] { "Emerald", "Ruby/Sapphire", "FireRed/LeafGreen"},
                 new string[] { "Diamond/Pearl", "Platinum", "HeartGold/SoulSilver"},
                 new string[] { "Black/White"},
-                new string[] { "X/Y onwards"},
+                new string[] { "X/Y"},
+                new string[] { "Sun/Moon", "UltraSun/UltraMoon"},
+                new string[] { "Sword/Shield"},
+                new string[] { "Scarlet/Violet"},
             };
 
         public static List<MainForm> mainForms = new List<MainForm>();
@@ -294,7 +297,7 @@ namespace PokemonCounter
 
         public static string[] PkmnNameException(string[] source, int[] positions, string[] exceptions)
         {
-            string[] result = new string[807];
+            string[] result = new string[1025];
             Array.Copy(source,result,source.Length);
             for (int i = 0; i < positions.Length; i++)
             {
