@@ -1045,7 +1045,8 @@ namespace PokemonCounter
     "Raging Bolt",
     "Iron Boulder",
     "Iron Crown",
-    "Terapagos"
+    "Terapagos",
+    "Pecharunt"
             };
             return names;
         }

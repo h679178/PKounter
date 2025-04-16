@@ -73,7 +73,11 @@ namespace PokemonCounter
                 string url_emeraldShinyGifs = "https://raw.githubusercontent.com/danigarpal97/EmeraldShinyGifs/master/";
                 string url_showdown = "https://play.pokemonshowdown.com/sprites/"; // 6th - 7th gen sprites
                 string url_pkmnnet = "http://pkmn.net/sprites/"; // 2nd gen gifs (white bg) + 3rd gen normal gifs
-                
+                string url_pokejungle = "https://pokejungle.net/sprites/"; // static sprites for pokemon with no gif
+                string url_pokeapi = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"; // static sprites
+                string url_pokeapiofficial = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/";
+                string url_PMD = "https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/"; // mystery dungeon static sprites
+
                 // 1st & 2nd gen static sprites
                 if (gen < 3 && !CKB_GIF.Checked)
                 {
@@ -117,7 +121,14 @@ namespace PokemonCounter
                 else if (gen > 2 && gen < 6 && !CKB_GIF.Checked || gen == 5)
                 {
                     picpath = url_pokemondb;
-                    picpath += CB_GAME.SelectedItem.ToString().ToLower().Replace('/', '-') + "/"; // GAME
+                    if (CB_GAME.SelectedItem.ToString() == "Black2/White2")
+                    {
+                        picpath += "black-white/";
+                    }
+                    else 
+                    { 
+                        picpath += CB_GAME.SelectedItem.ToString().ToLower().Replace('/', '-') + "/"; // GAME
+                    }
                     if (CKB_GIF.Checked) picpath += "anim/"; // GIF (1ST PART)
                     if (CKB_SHINY.Checked) picpath += "shiny/"; // SHINY
                     else picpath += "normal/";
@@ -127,8 +138,23 @@ namespace PokemonCounter
                     else picpath += ".png";
                 }
 
+                // Mystery Dungeon portraits for all gens
+                else if (CB_GAME.SelectedItem.ToString() == "PMD")
+                {
+                    picpath = url_PMD;
+                    while (pokedexnmb.Length < 4) pokedexnmb = "0" + pokedexnmb;
+                    if (CKB_SHINY.Checked)
+                    {
+                        picpath += pokedexnmb + "/0000/0001";
+                    } else
+                    {
+                        picpath += pokedexnmb;
+                    }
+                    picpath += "/Normal.png";
+                }
+
                 // 6th & 7th gen static sprites
-                else if (gen > 5 && !CKB_GIF.Checked)
+                else if (gen > 5 && gen < 8 && !CKB_GIF.Checked)
                 {
                     picpath = url_serebii;
 
@@ -141,14 +167,62 @@ namespace PokemonCounter
                     {
                         picpath += "sunmoon/pokemon/";
                     }
-                    picpath += pokedexnmb;
-                    picpath += ".png";
+                    picpath += pokedexnmb + ".png";
                 }
 
-                // 6th & 7th gen gifs
-                else if (gen > 5 && CKB_GIF.Checked)
+                // 6th - 8th gen gifs
+                else if (gen > 5 && gen < 9 && CKB_GIF.Checked)
                 {
-                    string[] NormalNameExceptions =
+                    string[] normalNames = Lib.PkmnNameException(Lib.PkmnNamesList, normalPositionExceptions(), normalNameExceptions());
+                    string[] shinyNames = Lib.PkmnNameException(Lib.PkmnNamesList, shinyPositionExceptions(), shinyNameExceptions());
+
+                    //picpath = url_showdown;
+                    if (Convert.ToInt32(pokedexnmb) > 982)
+                    {
+                        picpath = url_pokeapi;
+                        //while (pokedexnmb.Length < 4) pokedexnmb = "0" + pokedexnmb;
+                        if (CKB_SHINY.Checked) // SHINY
+                        {
+                            picpath += "shiny/";
+                            //picpath += shinyNames[Convert.ToInt32(pokedexnmb) - 1].ToLower();
+                            picpath += pokedexnmb;
+                        }
+                        else
+                        {
+                            picpath += "";
+                            //picpath += normalNames[Convert.ToInt32(pokedexnmb) - 1].ToLower();
+                            picpath += pokedexnmb;
+                        }
+                        picpath += ".png";
+                    }
+                    else
+                    {
+                        picpath = url_showdown;
+                        if (CKB_SHINY.Checked) // SHINY
+                        {
+                            picpath += "xyani-shiny/";
+                            picpath += shinyNames[Convert.ToInt32(pokedexnmb) - 1].ToLower();
+                        }
+                        else
+                        {
+                            picpath += "xyani/";
+                            picpath += normalNames[Convert.ToInt32(pokedexnmb) - 1].ToLower();
+                        }
+                        picpath += ".gif";
+                        if (pokedexnmb == "803")
+                        {
+                            if (CKB_SHINY.Checked) picpath = "https://projectpokemon.org/home/uploads/monthly_2017_12/PoipoleShiny-Animated.gif.c9da4c69598b0ca62f625f434c3ad0f0.gif";
+                            else picpath = "https://projectpokemon.org/home/uploads/monthly_2017_12/5a2babee957e7_PoipoleAnimated.gif.eac71fa1b3d822518314560dc17be994.gif";
+                        }
+                    }
+                }
+                FrameToUpdate.ImageLocation = picpath;
+            }
+        }
+
+        private string[] normalNameExceptions()
+        {
+            string[] NormalNameExceptions =
                     {
                         "Nidoranm",
                         "Farfetchd",
@@ -164,9 +238,26 @@ namespace PokemonCounter
                         "TapuBulu",
                         "TapuFini",
                         "Sirfetchd",
-                        "MrRime"
+                        "MrRime",
+                        "GreatTusk",
+                        "ScreamTail",
+                        "BruteBonnet",
+                        "FlutterMane",
+                        "SlitherWing",
+                        "SandyShocks",
+                        "IronTreads",
+                        "IronBundle",
+                        "IronHands",
+                        "IronJugulis",
+                        "IronMoth",
+                        "IronThorns"
                     };
-                    int[] NormalPositionExceptions =
+            return NormalNameExceptions;
+        }
+
+        private int[] normalPositionExceptions()
+        {
+            int[] NormalPositionExceptions =
                     {
                         31,
                         82,
@@ -182,9 +273,26 @@ namespace PokemonCounter
                         786,
                         787,
                         864,
-                        865
+                        865,
+                        983,
+                        984,
+                        985,
+                        986,
+                        987,
+                        988,
+                        989,
+                        990,
+                        991,
+                        992,
+                        993,
+                        994
                     };
-                    string[] ShinyNameExceptions =
+            return NormalPositionExceptions;
+        }
+
+        private string[] shinyNameExceptions()
+        {
+            string[] ShinyNameExceptions =
                     {
                         "NidoranF",
                         "NidoranM",
@@ -200,9 +308,26 @@ namespace PokemonCounter
                         "TapuBulu",
                         "TapuFini",
                         "Sirfetchd",
-                        "MrRime"
+                        "MrRime",
+                        "GreatTusk",
+                        "ScreamTail",
+                        "BruteBonnet",
+                        "FlutterMane",
+                        "SlitherWing",
+                        "SandyShocks",
+                        "IronTreads",
+                        "IronBundle",
+                        "IronHands",
+                        "IronJugulis",
+                        "IronMoth",
+                        "IronThorns"
                     };
-                    int[] ShinyPositionExceptions =
+            return ShinyNameExceptions;
+        }
+
+        private int[] shinyPositionExceptions()
+        {
+            int[] ShinyPositionExceptions =
                     {
                         28,
                         31,
@@ -218,33 +343,21 @@ namespace PokemonCounter
                         786,
                         787,
                         864,
-                        865
+                        865,
+                        983,
+                        984,
+                        985,
+                        986,
+                        987,
+                        988,
+                        989,
+                        990,
+                        991,
+                        992,
+                        993,
+                        994
                     };
-
-                    string[] normalNames = Lib.PkmnNameException(Lib.PkmnNamesList, NormalPositionExceptions, NormalNameExceptions);
-                    string[] shinyNames = Lib.PkmnNameException(Lib.PkmnNamesList, ShinyPositionExceptions, ShinyNameExceptions);
-
-                    picpath = url_showdown;
-                    
-                    if (CKB_SHINY.Checked) // SHINY
-                    {
-                        picpath += "xyani-shiny/";
-                        picpath += shinyNames[Convert.ToInt32(pokedexnmb) - 1].ToLower();
-                    }
-                    else
-                    {
-                        picpath += "xyani/";
-                        picpath += normalNames[Convert.ToInt32(pokedexnmb) - 1].ToLower();
-                    }
-                    picpath += ".gif";
-                    if (pokedexnmb == "803")
-                    {
-                        if (CKB_SHINY.Checked) picpath = "https://projectpokemon.org/home/uploads/monthly_2017_12/PoipoleShiny-Animated.gif.c9da4c69598b0ca62f625f434c3ad0f0.gif";
-                        else picpath = "https://projectpokemon.org/home/uploads/monthly_2017_12/5a2babee957e7_PoipoleAnimated.gif.eac71fa1b3d822518314560dc17be994.gif";
-                    }
-                }
-                FrameToUpdate.ImageLocation = picpath;
-            }
+            return ShinyPositionExceptions;
         }
 
         private void CB_POKE_SelectedIndexChanged(object sender, EventArgs e)
@@ -282,6 +395,7 @@ namespace PokemonCounter
             else {  CKB_SHINY.Enabled = true; }
             if (CB_GAME.SelectedItem.ToString() == "Crystal" || CB_GAME.SelectedItem.ToString() == "Emerald" || Convert.ToInt32(CB_GEN.SelectedItem.ToString().Substring(4)) >= 5) CKB_GIF.Enabled = true;
             else { CKB_GIF.Checked = false; CKB_GIF.Enabled = false; }
+            if (CB_GAME.SelectedItem.ToString() == "PMD") { CKB_GIF.Checked = false; CKB_GIF.Enabled = false; } 
             UpdatePic(PBX_PREVIEW);
         }
 

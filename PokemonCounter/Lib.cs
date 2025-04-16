@@ -38,11 +38,11 @@ namespace PokemonCounter
                 new string[] { "Crystal", "Gold", "Silver"},
                 new string[] { "Emerald", "Ruby/Sapphire", "FireRed/LeafGreen"},
                 new string[] { "Diamond/Pearl", "Platinum", "HeartGold/SoulSilver"},
-                new string[] { "Black/White"},
-                new string[] { "X/Y"},
+                new string[] { "Black/White", "Black2/White2"},
+                new string[] { "X/Y", "OmegaRuby/AlphaSapphire"},
                 new string[] { "Sun/Moon", "UltraSun/UltraMoon"},
-                new string[] { "Sword/Shield"},
-                new string[] { "Scarlet/Violet"},
+                new string[] { "Sword/Shield", "Home"},
+                new string[] { "Scarlet/Violet", "Home", "PMD"},
             };
 
         public static List<MainForm> mainForms = new List<MainForm>();
