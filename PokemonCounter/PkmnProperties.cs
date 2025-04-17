@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -125,8 +126,8 @@ namespace PokemonCounter
                     {
                         picpath += "black-white/";
                     }
-                    else 
-                    { 
+                    else
+                    {
                         picpath += CB_GAME.SelectedItem.ToString().ToLower().Replace('/', '-') + "/"; // GAME
                     }
                     if (CKB_GIF.Checked) picpath += "anim/"; // GIF (1ST PART)
@@ -146,7 +147,8 @@ namespace PokemonCounter
                     if (CKB_SHINY.Checked)
                     {
                         picpath += pokedexnmb + "/0000/0001";
-                    } else
+                    }
+                    else
                     {
                         picpath += pokedexnmb;
                     }
@@ -216,7 +218,32 @@ namespace PokemonCounter
                         }
                     }
                 }
-                FrameToUpdate.ImageLocation = picpath;
+
+                // 8th, 9th gen & HOME static sprites
+                else if (gen >= 8 && !CKB_GIF.Checked)
+                {
+                    string[] normalNames = Lib.PkmnNameException(Lib.PkmnNamesList, Gen8PositionExceptions(), Gen8NameExceptions());
+                    //string[] shinyNames = Lib.PkmnNameException(Lib.PkmnNamesList, Gen8PositionExceptions(), Gen8NameExceptions());
+                    
+                    picpath = url_pokemondb;
+                    picpath += CB_GAME.SelectedItem.ToString().ToLower().Replace('/', '-') + "/"; // GAME
+                    if (CKB_SHINY.Checked) picpath += "shiny/"; 
+                    else picpath += "normal/";
+
+                    if (!CKB_ORDER.Checked) picpath += normalNames[CB_POKE.SelectedIndex].ToLower(); // NAME
+                    else
+                    {
+                        Array.Sort(normalNames, StringComparer.InvariantCulture);
+                        picpath += normalNames[CB_POKE.SelectedIndex].ToLower();
+                    }
+                    picpath += ".png";
+                }
+
+                //else if (gen == 9 && !CKB_GIF.Checked)
+                //{
+                //    picpath = url_pokemondb;
+                //}
+                    FrameToUpdate.ImageLocation = picpath;
             }
         }
 
@@ -224,6 +251,7 @@ namespace PokemonCounter
         {
             string[] NormalNameExceptions =
                     {
+                        "Nidoranf",
                         "Nidoranm",
                         "Farfetchd",
                         "MrMime",
@@ -259,6 +287,7 @@ namespace PokemonCounter
         {
             int[] NormalPositionExceptions =
                     {
+                        28,
                         31,
                         82,
                         121,
@@ -292,72 +321,92 @@ namespace PokemonCounter
 
         private string[] shinyNameExceptions()
         {
-            string[] ShinyNameExceptions =
-                    {
-                        "NidoranF",
-                        "NidoranM",
-                        "Farfetchd",
-                        "MrMime",
-                        "Mime_jr",
-                        "TypeNull",
-                        "Jangmoo",
-                        "Hakamoo",
-                        "Kommoo",
-                        "TapuKoko",
-                        "TapuLele",
-                        "TapuBulu",
-                        "TapuFini",
-                        "Sirfetchd",
-                        "MrRime",
-                        "GreatTusk",
-                        "ScreamTail",
-                        "BruteBonnet",
-                        "FlutterMane",
-                        "SlitherWing",
-                        "SandyShocks",
-                        "IronTreads",
-                        "IronBundle",
-                        "IronHands",
-                        "IronJugulis",
-                        "IronMoth",
-                        "IronThorns"
-                    };
-            return ShinyNameExceptions;
+            return normalNameExceptions();
         }
 
         private int[] shinyPositionExceptions()
         {
-            int[] ShinyPositionExceptions =
-                    {
-                        28,
-                        31,
-                        82,
-                        121,
-                        438,
-                        771,
-                        781,
-                        782,
-                        783,
-                        784,
-                        785,
-                        786,
-                        787,
-                        864,
-                        865,
-                        983,
-                        984,
-                        985,
-                        986,
-                        987,
-                        988,
-                        989,
-                        990,
-                        991,
-                        992,
-                        993,
-                        994
-                    };
-            return ShinyPositionExceptions;
+            return normalPositionExceptions();
+        }
+
+        private string[] Gen8NameExceptions()
+        {
+            string[] nameExceptions =
+            {
+                "Nidoran-f",
+                "Nidoran-m",
+                "Farfetchd",
+                "Mr-Mime",
+                "Mime-Jr",
+                "Type-Null",
+                "Tapu-Koko",
+                "Tapu-Lele",
+                "Tapu-Bulu",
+                "Tapu-Fini",
+                "SirFetchd",
+                "Mr-Rime",
+                "Great-Tusk",
+                "Scream-Tail",
+                "Brute-Bonnet",
+                "Flutter-Mane",
+                "Slither-Wing",
+                "Sandy-Shocks",
+                "Iron-Treads",
+                "Iron-Bundle",
+                "Iron-Hands",
+                "Iron-Jugulis",
+                "Iron-Moth",
+                "Iron-Thorns",
+                "Roaring-Moon",
+                "Iron-Valiant",
+                "Walking-Wake",
+                "Iron-Leaves",
+                "Gouging-Fire",
+                "Raging-Bolt",
+                "Iron-Boulder",
+                "Iron-Crown"
+            };
+            return nameExceptions;
+        }
+
+        private int[] Gen8PositionExceptions()
+        {
+            int[] positionExceptions =
+            {
+                28,
+                31,
+                82,
+                121,
+                438,
+                771,
+                784,
+                785,
+                786,
+                787,
+                864,
+                865,
+                983,
+                984,
+                985,
+                986,
+                987,
+                988,
+                989,
+                990,
+                991,
+                992,
+                993,
+                994,
+                1004,
+                1005,
+                1008,
+                1009,
+                1019,
+                1020,
+                1021,
+                1022
+            };
+            return positionExceptions;
         }
 
         private void CB_POKE_SelectedIndexChanged(object sender, EventArgs e)
@@ -392,10 +441,10 @@ namespace PokemonCounter
         private void CB_GAME_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (CB_GEN.SelectedItem.ToString() == "GEN 1") { CKB_SHINY.Checked = false; CKB_SHINY.Enabled = false; }
-            else {  CKB_SHINY.Enabled = true; }
-            if (CB_GAME.SelectedItem.ToString() == "Crystal" || CB_GAME.SelectedItem.ToString() == "Emerald" || Convert.ToInt32(CB_GEN.SelectedItem.ToString().Substring(4)) >= 5) CKB_GIF.Enabled = true;
+            else { CKB_SHINY.Enabled = true; }
+            if (CB_GAME.SelectedItem.ToString() == "Crystal" || CB_GAME.SelectedItem.ToString() == "Emerald" || Convert.ToInt32(CB_GEN.SelectedItem.ToString().Substring(4)) >= 5 && Convert.ToInt32(CB_GEN.SelectedItem.ToString().Substring(4)) <= 9) CKB_GIF.Enabled = true;
+            else if (CB_GAME.SelectedItem.ToString() == "PMD") { CKB_GIF.Checked = false; CKB_GIF.Enabled = false; }
             else { CKB_GIF.Checked = false; CKB_GIF.Enabled = false; }
-            if (CB_GAME.SelectedItem.ToString() == "PMD") { CKB_GIF.Checked = false; CKB_GIF.Enabled = false; } 
             UpdatePic(PBX_PREVIEW);
         }
 
@@ -421,6 +470,8 @@ namespace PokemonCounter
         }
         private void CKB_GIF_CheckedChanged(object sender, EventArgs e)
         {
+            if (CB_GAME.SelectedItem.ToString() == "Sword/Shield" || CB_GAME.SelectedItem.ToString() == "Scarlet/Violet" && !CKB_GIF.Checked) { CKB_SHINY.Checked = false; CKB_SHINY.Enabled = false; }
+            else { CKB_SHINY.Enabled = true; }
             UpdatePic(PBX_PREVIEW);
         }
 

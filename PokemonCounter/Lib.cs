@@ -126,8 +126,15 @@ namespace PokemonCounter
 
                 string iconFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\";
                 iconFile += "icons\\";
-                if (shiny) iconFile += "shiny\\";
-                else iconFile += "normal\\";
+                if (Convert.ToInt32(dexnmb) > 807 && Convert.ToInt32(dexnmb) < 906)
+                {
+                    iconFile += "normal\\";
+                } else
+                {
+                    if (shiny) iconFile += "shiny\\";
+                    else iconFile += "normal\\";
+                }
+                //if (Convert.ToInt32(dexnmb) > 807 && Convert.ToInt32(dexnmb) < 906) { iconFile += pkmnName + ".png"; }
                 iconFile += dexnmb + ".png";
                 
                 try
