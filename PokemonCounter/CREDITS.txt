@@ -4,6 +4,8 @@ Sprites:
 	https://github.com/danigarpal97/EmeraldShinyGifs
 	http://play.pokemonshowdown.com/sprites/
 	http://pkmn.net/
+	https://sprites.pmdcollab.org/
+	https://pokeapi.co/
 	
 Design and programming:
 	/u/Shiratama_
@@ -13,3 +15,6 @@ Pokemon names:
 	
 Icons:
 	https://github.com/msikma/pokesprite
+	https://www.deviantart.com/arclart
+	https://www.deviantart.com/ezerart/art/Pokemon-Gen-9-Icon-sprites-3DS-Style-944211258
+	https://www.deviantart.com/ezerart/art/Shiny-Pokemon-Gen-9-Icon-sprites-3DS-Style-944778082

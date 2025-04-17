@@ -74,9 +74,7 @@ namespace PokemonCounter
                 string url_emeraldShinyGifs = "https://raw.githubusercontent.com/danigarpal97/EmeraldShinyGifs/master/";
                 string url_showdown = "https://play.pokemonshowdown.com/sprites/"; // 6th - 7th gen sprites
                 string url_pkmnnet = "http://pkmn.net/sprites/"; // 2nd gen gifs (white bg) + 3rd gen normal gifs
-                string url_pokejungle = "https://pokejungle.net/sprites/"; // static sprites for pokemon with no gif
                 string url_pokeapi = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"; // static sprites
-                string url_pokeapiofficial = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/";
                 string url_PMD = "https://raw.githubusercontent.com/PMDCollab/SpriteCollab/master/portrait/"; // mystery dungeon static sprites
 
                 // 1st & 2nd gen static sprites
@@ -178,21 +176,17 @@ namespace PokemonCounter
                     string[] normalNames = Lib.PkmnNameException(Lib.PkmnNamesList, normalPositionExceptions(), normalNameExceptions());
                     string[] shinyNames = Lib.PkmnNameException(Lib.PkmnNamesList, shinyPositionExceptions(), shinyNameExceptions());
 
-                    //picpath = url_showdown;
                     if (Convert.ToInt32(pokedexnmb) > 982)
                     {
                         picpath = url_pokeapi;
-                        //while (pokedexnmb.Length < 4) pokedexnmb = "0" + pokedexnmb;
                         if (CKB_SHINY.Checked) // SHINY
                         {
                             picpath += "shiny/";
-                            //picpath += shinyNames[Convert.ToInt32(pokedexnmb) - 1].ToLower();
                             picpath += pokedexnmb;
                         }
                         else
                         {
                             picpath += "";
-                            //picpath += normalNames[Convert.ToInt32(pokedexnmb) - 1].ToLower();
                             picpath += pokedexnmb;
                         }
                         picpath += ".png";
@@ -222,8 +216,7 @@ namespace PokemonCounter
                 // 8th, 9th gen & HOME static sprites
                 else if (gen >= 8 && !CKB_GIF.Checked)
                 {
-                    string[] normalNames = Lib.PkmnNameException(Lib.PkmnNamesList, Gen8PositionExceptions(), Gen8NameExceptions());
-                    //string[] shinyNames = Lib.PkmnNameException(Lib.PkmnNamesList, Gen8PositionExceptions(), Gen8NameExceptions());
+                    string[] normalNames = Lib.PkmnNameException(Lib.PkmnNamesList, Gen8_9PositionExceptions(), Gen8_9NameExceptions());
                     
                     picpath = url_pokemondb;
                     picpath += CB_GAME.SelectedItem.ToString().ToLower().Replace('/', '-') + "/"; // GAME
@@ -238,11 +231,6 @@ namespace PokemonCounter
                     }
                     picpath += ".png";
                 }
-
-                //else if (gen == 9 && !CKB_GIF.Checked)
-                //{
-                //    picpath = url_pokemondb;
-                //}
                     FrameToUpdate.ImageLocation = picpath;
             }
         }
@@ -329,7 +317,7 @@ namespace PokemonCounter
             return normalPositionExceptions();
         }
 
-        private string[] Gen8NameExceptions()
+        private string[] Gen8_9NameExceptions()
         {
             string[] nameExceptions =
             {
@@ -369,7 +357,7 @@ namespace PokemonCounter
             return nameExceptions;
         }
 
-        private int[] Gen8PositionExceptions()
+        private int[] Gen8_9PositionExceptions()
         {
             int[] positionExceptions =
             {
@@ -441,9 +429,10 @@ namespace PokemonCounter
         private void CB_GAME_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (CB_GEN.SelectedItem.ToString() == "GEN 1") { CKB_SHINY.Checked = false; CKB_SHINY.Enabled = false; }
+            else if (CB_GAME.SelectedItem.ToString() == "Sword/Shield" && !CKB_GIF.Checked) { CKB_SHINY.Checked = false; CKB_SHINY.Enabled = false; }
             else { CKB_SHINY.Enabled = true; }
-            if (CB_GAME.SelectedItem.ToString() == "Crystal" || CB_GAME.SelectedItem.ToString() == "Emerald" || Convert.ToInt32(CB_GEN.SelectedItem.ToString().Substring(4)) >= 5 && Convert.ToInt32(CB_GEN.SelectedItem.ToString().Substring(4)) <= 9) CKB_GIF.Enabled = true;
-            else if (CB_GAME.SelectedItem.ToString() == "PMD") { CKB_GIF.Checked = false; CKB_GIF.Enabled = false; }
+            if (CB_GAME.SelectedItem.ToString() == "Crystal" || CB_GAME.SelectedItem.ToString() == "Emerald" || Convert.ToInt32(CB_GEN.SelectedItem.ToString().Substring(4)) >= 5 && Convert.ToInt32(CB_GEN.SelectedItem.ToString().Substring(4)) <= 8) CKB_GIF.Enabled = true;
+            else if (CB_GAME.SelectedItem.ToString() == "PMD" || CB_GAME.SelectedItem.ToString() == "Scarlet/Violet") { CKB_GIF.Checked = false; CKB_GIF.Enabled = false; }
             else { CKB_GIF.Checked = false; CKB_GIF.Enabled = false; }
             UpdatePic(PBX_PREVIEW);
         }
@@ -471,7 +460,9 @@ namespace PokemonCounter
         private void CKB_GIF_CheckedChanged(object sender, EventArgs e)
         {
             if (CB_GAME.SelectedItem.ToString() == "Sword/Shield" || CB_GAME.SelectedItem.ToString() == "Scarlet/Violet" && !CKB_GIF.Checked) { CKB_SHINY.Checked = false; CKB_SHINY.Enabled = false; }
+            else if (CB_GAME.SelectedItem.ToString() == "Sword/Shield" && !CKB_GIF.Checked) { CKB_SHINY.Checked = false; CKB_SHINY.Enabled = false; }
             else { CKB_SHINY.Enabled = true; }
+            if (CB_GAME.SelectedItem.ToString() == "Sword/Shield" && CKB_GIF.Checked) { CKB_SHINY.Enabled = true; }
             UpdatePic(PBX_PREVIEW);
         }
 

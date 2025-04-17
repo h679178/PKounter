@@ -134,7 +134,6 @@ namespace PokemonCounter
                     if (shiny) iconFile += "shiny\\";
                     else iconFile += "normal\\";
                 }
-                //if (Convert.ToInt32(dexnmb) > 807 && Convert.ToInt32(dexnmb) < 906) { iconFile += pkmnName + ".png"; }
                 iconFile += dexnmb + ".png";
                 
                 try
